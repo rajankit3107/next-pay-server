@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config";
+import ConnectDB from "./config";
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-connectDB();
+ConnectDB();
 
 app.listen(port, () => {
   console.log(`server is up on port ${port}`);

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-async function connectDB() {
+async function ConnectDB() {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
@@ -19,4 +19,4 @@ async function connectDB() {
   }
 }
 
-export default connectDB;
+export default ConnectDB;
