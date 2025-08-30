@@ -30,8 +30,8 @@ export const authMiddleware = (
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
       userId: string;
     };
-    req.userId = decoded.userId;
 
+    req.userId = decoded.userId;
     next();
   } catch (error) {
     console.log("Auth middleware error:", error);

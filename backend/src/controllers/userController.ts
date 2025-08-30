@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
-import { signin, signupBody } from "../validators/validators";
+import { signinBody, signupBody, updateBody } from "../validators/validators";
 import dotenv from "dotenv";
 import { User } from "../models/model";
 import jwt from "jsonwebtoken";
+
+interface AuthenticatedRequest extends Request {
+  userId?: string;
+}
 
 dotenv.config();
 
@@ -50,12 +54,15 @@ export const Signup = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(`Error while signingUp`, error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 };
 
 export const Signin = async (req: Request, res: Response) => {
   try {
-    const { success } = signin.safeParse(req.body);
+    const { success } = signinBody.safeParse(req.body);
     // console.log(success);
     if (!success) {
       return res.status(400).json({ message: `Error while signing in` });
@@ -88,5 +95,41 @@ export const Signin = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(`Error while signingIn`, error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export const Update = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { success } = updateBody.safeParse(req.body);
+    console.log(success);
+
+    if (!success) {
+      return res
+        .status(400)
+        .json({ message: `Error while updating information` });
+    }
+
+    if (!req.userId) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const result = await User.updateOne(
+      {
+        _id: req.userId,
+      },
+      req.body
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json({ message: "User updated successfully" });
+  } catch (error) {
+    console.log("Error while updating user:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
