@@ -133,3 +133,55 @@ export const Update = async (req: AuthenticatedRequest, res: Response) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const Filter = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const { firstName, lastName } = req.query;
+
+    // Build the search query
+    const searchQuery: any = {};
+
+    if (firstName && typeof firstName === "string" && firstName.trim() !== "") {
+      searchQuery.firstName = {
+        $regex: firstName.trim(),
+        $options: "i", // Case insensitive search
+      };
+    }
+
+    if (lastName && typeof lastName === "string" && lastName.trim() !== "") {
+      searchQuery.lastName = {
+        $regex: lastName.trim(),
+        $options: "i", // Case insensitive search
+      };
+    }
+
+    // If no search parameters provided, return all users
+    if (Object.keys(searchQuery).length === 0) {
+      const allUsers = await User.find({});
+      return res.json({
+        users: allUsers.map((user) => ({
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        })),
+      });
+    }
+
+    const users = await User.find(searchQuery);
+
+    return res.json({
+      users: users.map((user) => ({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      })),
+    });
+  } catch (error) {
+    console.log("Error while filtering users:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
