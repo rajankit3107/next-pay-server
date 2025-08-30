@@ -6,3 +6,8 @@ export const signupBody = z.object({
   lastName: z.string(),
   password: z.string(),
 });
+
+export const signin = z.object({
+  username: z.email(),
+  password: z.string(),
+});
