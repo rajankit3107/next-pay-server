@@ -15,10 +15,6 @@ app.use(express.json());
 
 app.use("/api/v1", mainrouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-
 ConnectDB();
 
 app.listen(port, () => {
