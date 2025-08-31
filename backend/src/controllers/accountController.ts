@@ -6,6 +6,16 @@ interface AuthenticatedRequest extends Request {
   userId?: string;
 }
 
+export const getBalance = async (req: AuthenticatedRequest, res: Response) => {
+  const account = await Account.findOne({
+    userId: req.userId,
+  });
+
+  return res.json({
+    balance: account?.balance,
+  });
+};
+
 export const transferAmount = async (
   req: AuthenticatedRequest,
   res: Response
