@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { signinBody, signupBody, updateBody } from "../validators/validators";
 import dotenv from "dotenv";
-import { User } from "../models/model";
+import { Account, User } from "../models/model";
 import jwt from "jsonwebtoken";
 
 interface AuthenticatedRequest extends Request {
@@ -36,6 +36,13 @@ export const Signup = async (req: Request, res: Response) => {
     });
 
     const userId = user._id;
+
+    //create an account for the user
+
+    await Account.create({
+      userId,
+      balance: 1 + Math.random() * 10000,
+    });
 
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET is not set in environment variables");
