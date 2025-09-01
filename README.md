@@ -72,12 +72,6 @@ paytm/
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- Node.js (v16 or higher)
-- pnpm (or npm)
-- MongoDB (local or Atlas)
-
 ### Installation
 
 1. **Clone the repository**
