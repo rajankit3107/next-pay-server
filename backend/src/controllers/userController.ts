@@ -174,6 +174,7 @@ export const Filter = async (req: AuthenticatedRequest, res: Response) => {
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
+          id: user._id,
         })),
       });
     }
@@ -185,6 +186,7 @@ export const Filter = async (req: AuthenticatedRequest, res: Response) => {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
+        id: user._id,
       })),
     });
   } catch (error) {
