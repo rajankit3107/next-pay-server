@@ -1,4 +1,4 @@
-# 💰 Paytm - Digital Payment System
+# 💰 next-pay server
 
 A full-stack digital payment system built with Node.js, Express, TypeScript, and MongoDB, featuring user authentication, account management, and money transfer capabilities.
 
